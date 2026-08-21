@@ -17,15 +17,31 @@
       "name": "regready-hunt-preview",
       "vars": {
         "ENVIRONMENT": "preview",
-        "RULES_STATUS": "demo-data"
-      }
+        "RULES_STATUS": "source-captured-normalization-pending-human-review"
+      },
+      "d1_databases": [
+        {
+          "binding": "RULES_DB",
+          "database_name": "regready-hunt-rules-preview",
+          "database_id": "298875a7-d758-4e8a-b0d6-96aff6666180",
+          "migrations_dir": "./migrations"
+        }
+      ]
     },
     "production": {
       "name": "regready-hunt-production",
       "vars": {
         "ENVIRONMENT": "production",
-        "RULES_STATUS": "demo-data"
-      }
+        "RULES_STATUS": "source-captured-normalization-pending-human-review"
+      },
+      "d1_databases": [
+        {
+          "binding": "RULES_DB",
+          "database_name": "regready-hunt-rules-production",
+          "database_id": "a7edad20-4403-40dc-8df0-e5f4fdd03286",
+          "migrations_dir": "./migrations"
+        }
+      ]
     }
   }
 }
