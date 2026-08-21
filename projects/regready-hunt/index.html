@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10271f">
+<meta name="description" content="A source-linked hunt readiness checklist for mobile hunters.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+<title>RegReady Hunt</title>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div><span class="eyebrow">HUNT PREP</span><h1>Know what to check before you head out.</h1></div>
+    <span class="status" aria-label="Prototype status">Prototype</span>
+  </header>
+
+  <section class="intro">
+    <p>Build a personal readiness card from your hunt details. Every answer should point back to an official source.</p>
+  </section>
+
+  <form id="hunt-form" class="panel">
+    <div class="field"><label for="state">State</label><select id="state" required><option value="">Choose a state</option><option>Oklahoma</option><option>Texas</option><option>Wisconsin</option></select></div>
+    <div class="field"><label for="species">Species</label><select id="species" required><option value="">Choose species</option><option>White-tailed deer</option><option>Turkey</option><option>Waterfowl</option></select></div>
+    <div class="field"><label for="hunt-date">Hunt date</label><input id="hunt-date" type="date" required></div>
+    <div class="field"><label for="weapon">Weapon</label><select id="weapon" required><option value="">Choose weapon</option><option>Rifle</option><option>Shotgun</option><option>Archery</option><option>Muzzleloader</option></select></div>
+    <button class="primary" type="submit">Build readiness card</button>
+  </form>
+
+  <section id="result" class="result" hidden aria-live="polite"></section>
+
+  <section class="trust-note">
+    <strong>Prototype safety rule</strong>
+    <p>This v1 uses demonstration data only. It is not legal advice. Before hunting, verify the current official rules, emergency notices, license, tag, and reporting requirements for your exact location.</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

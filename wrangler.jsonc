@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "regready-hunt",
+  "main": "./src/index.ts",
+  "compatibility_date": "2026-08-20",
+  "assets": {
+    "directory": "./projects/regready-hunt",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "env": {
+    "preview": {
+      "name": "regready-hunt-preview",
+      "vars": {
+        "ENVIRONMENT": "preview",
+        "RULES_STATUS": "demo-data"
+      }
+    },
+    "production": {
+      "name": "regready-hunt-production",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "RULES_STATUS": "demo-data"
+      }
+    }
+  }
+}

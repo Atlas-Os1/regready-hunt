@@ -1,0 +1,17 @@
+{
+  "name": "regready-hunt",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "check": "node --check projects/regready-hunt/app.js && node --check projects/regready-hunt/sw.js",
+    "test:mobile": "node scripts/test-mobile.mjs",
+    "cf:dry-run": "wrangler deploy --env preview --dry-run",
+    "cf:deploy:preview": "wrangler deploy --env preview",
+    "cf:deploy:production": "wrangler deploy --env production"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.36.1",
+    "wrangler": "^4.104.0"
+  }
+}
