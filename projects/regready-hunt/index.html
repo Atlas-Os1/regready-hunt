@@ -50,6 +50,23 @@
 
   <section id="result" class="result" hidden aria-live="polite"></section>
 
+  <section class="account-area" aria-labelledby="account-title">
+    <div class="section-heading"><div><p class="kicker">YOUR FIELD DESK</p><h2 id="account-title">Keep your season together</h2></div><span id="account-state" class="step-count">Not signed in</span></div>
+    <div class="account-grid">
+      <div class="account-card auth-card">
+        <h3>Create an account</h3><p class="muted">Save hunt plans and license snapshots across devices.</p>
+        <form id="account-form" class="account-form"><label for="account-email">Email</label><input id="account-email" type="email" autocomplete="email" required><label for="account-password">Password</label><input id="account-password" type="password" minlength="10" autocomplete="new-password" required><div class="account-actions"><button class="secondary" type="submit" data-mode="signup">Create account</button><button class="text-button" type="button" id="login-button">Log in</button></div><p id="account-message" class="form-message" role="status"></p></form>
+      </div>
+      <div class="account-card connector-card">
+        <div class="connector-top"><span class="agency-mark">O</span><div><h3>ODWC licenses</h3><p class="muted">Official account handoff</p></div><span class="connector-status">No credentials stored</span></div>
+        <p class="muted">RegReady never asks for your date of birth, SSN, PIN, or agency password. Open the official licensing system, then save a masked license snapshot here.</p>
+        <div class="account-actions"><a class="secondary link-button" href="https://license.gooutdoorsoklahoma.com/Licensing/CustomerLookup.aspx" target="_blank" rel="noreferrer">Open ODWC login ↗</a><button class="text-button" type="button" id="show-license">Add license snapshot</button></div>
+        <form id="license-form" class="license-form" hidden><label for="license-name">License or permit name</label><input id="license-name" required placeholder="Annual deer license"><label for="license-species">Species</label><input id="license-species" placeholder="Deer"><label for="license-number">Masked number</label><input id="license-number" placeholder="...1234" maxlength="40"><label for="license-expiry">Expires</label><input id="license-expiry" type="date"><button class="primary" type="submit"><span>Save snapshot</span><span>↗</span></button></form>
+      </div>
+    </div>
+    <div id="saved-area" class="saved-area" hidden><div class="saved-header"><h3>Saved field records</h3><button id="logout-button" class="text-button" type="button">Log out</button></div><div id="license-list" class="record-list"></div><div id="plan-list" class="record-list"></div></div>
+  </section>
+
   <footer class="safety-footer"><span class="footer-mark">!</span><p><strong>Prototype safety rule.</strong> Captured source evidence still requires human review. This is not legal advice. Verify current rules, emergency notices, licenses, tags, and reporting requirements for your exact location.</p></footer>
 </main>
 <script src="app.js"></script>
