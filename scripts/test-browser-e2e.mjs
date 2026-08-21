@@ -1,5 +1,7 @@
 import puppeteer from "puppeteer";
+import { fileURLToPath } from "node:url";
 
+const licenseFixture = fileURLToPath(new URL("../tests/fixtures/license-image.png", import.meta.url));
 const base = process.env.REGREADY_URL || "https://regready-hunt-production.srvcflo.workers.dev";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
@@ -50,7 +52,7 @@ const duplicate = await page.evaluate(async ({ email, password }) => {
 assert(duplicate === 409, `duplicate signup ${duplicate}`);
 
 await page.click("#show-license");
-await (await page.$("#license-image")).uploadFile("C:/Users/Minte/ui-regready-mobile.png");
+await (await page.$("#license-image")).uploadFile(licenseFixture);
 await page.waitForFunction(() => !document.querySelector("#license-preview")?.hidden);
 assert(await page.$eval("#license-preview-image", (el) => el.src.startsWith("blob:")), "local screenshot preview");
 await page.type("#license-name", "Annual elk license");
