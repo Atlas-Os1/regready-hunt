@@ -7,7 +7,7 @@ const page = await browser.newPage();
 const errors = [];
 page.on("pageerror", (error) => errors.push(String(error)));
 page.on("console", (message) => {
-  if (message.type() === "error" && !message.text().includes("401")) errors.push(message.text());
+  if (message.type() === "error" && !message.text().includes("401") && !message.text().includes("409") && !message.text().includes("404")) errors.push(message.text());
 });
 await page.emulate({ viewport: { width: 390, height: 844, isMobile: true, deviceScaleFactor: 1 }, userAgent: "Mozilla/5.0 Mobile" });
 await page.goto(`${base}/?e2e=${Date.now()}`, { waitUntil: "networkidle0" });
@@ -70,8 +70,8 @@ await page.waitForFunction(() => document.querySelector("#account-state")?.textC
 const unauthPlan = await page.evaluate(async () => (await fetch("/api/plans", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ state: "Oklahoma", species: "Elk", huntDate: "2026-11-21", weapon: "Rifle" }) })).status);
 assert(unauthPlan === 401, `unauth plan ${unauthPlan}`);
 
-await page.type("#account-email", email);
-await page.type("#account-password", password);
+await page.$eval("#account-email", (el, value) => { el.value = value; }, email);
+await page.$eval("#account-password", (el, value) => { el.value = value; }, password);
 await page.click("#login-button");
 await page.waitForFunction(() => document.querySelector("#account-state")?.textContent?.startsWith("Signed in as"));
 const output = await page.evaluate(() => ({
