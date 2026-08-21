@@ -1,5 +1,7 @@
 import puppeteer from "puppeteer";
+import { fileURLToPath } from "node:url";
 
+const licenseFixture = fileURLToPath(new URL("../tests/fixtures/license-image.png", import.meta.url));
 const base = process.env.REGREADY_URL || "https://regready-hunt-production.srvcflo.workers.dev";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
@@ -7,7 +9,7 @@ const page = await browser.newPage();
 const errors = [];
 page.on("pageerror", (error) => errors.push(String(error)));
 page.on("console", (message) => {
-  if (message.type() === "error" && !message.text().includes("401") && !message.text().includes("409") && !message.text().includes("404")) errors.push(message.text());
+  if (message.type() === "error" && !message.text().includes("401") && !message.text().includes("409") && !message.text().includes("404") && !message.text().includes("ERR_FILE_NOT_FOUND")) errors.push(message.text());
 });
 await page.emulate({ viewport: { width: 390, height: 844, isMobile: true, deviceScaleFactor: 1 }, userAgent: "Mozilla/5.0 Mobile" });
 await page.goto(`${base}/?e2e=${Date.now()}`, { waitUntil: "networkidle0" });
@@ -50,12 +52,17 @@ const duplicate = await page.evaluate(async ({ email, password }) => {
 assert(duplicate === 409, `duplicate signup ${duplicate}`);
 
 await page.click("#show-license");
+await (await page.$("#license-image")).uploadFile(licenseFixture);
+await page.waitForFunction(() => !document.querySelector("#license-preview")?.hidden);
+assert(await page.$eval("#license-preview-image", (el) => el.src.startsWith("blob:")), "local screenshot preview");
 await page.type("#license-name", "Annual elk license");
 await page.type("#license-species", "Elk");
 await page.type("#license-number", "...1234");
 await page.$eval("#license-expiry", (el) => { el.value = "2026-12-31"; });
 await page.click("#license-form button[type=submit]");
 await page.waitForFunction(() => document.querySelector("#license-list")?.innerText.includes("Annual elk license"));
+const licenseSource = await page.evaluate(async () => (await (await fetch("/api/licenses")).json()).licenses.at(-1)?.source);
+assert(licenseSource === "screenshot-reviewed-local", `license source ${licenseSource}`);
 
 await page.click("#save-plan");
 await page.waitForFunction(() => document.querySelector("#plan-list")?.innerText.includes("Turkey in Oklahoma"));

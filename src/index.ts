@@ -103,9 +103,10 @@ async function userDataRoute(request: Request, env: Env, path: string) {
     const masked = typeof input?.licenseNumberMasked === "string" ? input.licenseNumberMasked.trim().slice(0, 40) : null;
     const expiresOn = typeof input?.expiresOn === "string" ? input.expiresOn : null;
     if (!agency || !licenseName) return error("Agency and license name are required.");
+    const captureMode = input?.captureMode === "screenshot-reviewed-local" ? "screenshot-reviewed-local" : "manual-entry";
     const licenseId = crypto.randomUUID();
     await env.RULES_DB.prepare("INSERT INTO licenses (license_id, user_id, agency, license_name, species, license_number_masked, expires_on, status, source, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-      .bind(licenseId, userId, agency, licenseName, species, masked, expiresOn, "user-entered", "user-entered", isoNow()).run();
+      .bind(licenseId, userId, agency, licenseName, species, masked, expiresOn, "user-confirmed", captureMode, isoNow()).run();
     return json({ licenseId, status: "saved" }, { status: 201 });
   }
   if (path === "/api/trips" && request.method === "GET") {
