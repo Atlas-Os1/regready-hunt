@@ -11,7 +11,7 @@ The current slice is screenshot-assisted confirmation. It is not OCR, ODWC accou
 - The API receives only fields explicitly confirmed in the form.
 - The API stores a minimized record with `status=user-confirmed`.
 - Provenance is `screenshot-reviewed-local` when a local screenshot was selected and `manual-entry` otherwise.
-- The current image is released by browser form reset and is not persisted by RegReady.
+- The current object URL is revoked when replaced, rejected, or successfully saved; the preview source is cleared and the form is reset after save. The image is not uploaded or persisted by RegReady.
 
 ## Fields
 
@@ -28,10 +28,11 @@ RegReady does not request or store DOB, SSN, barcode/QR payloads, full license i
 
 ## Verification
 
-- `npm run check`
-- GitHub verification run `32452693971` passed on PR head `ca910c8`.
-- Existing mobile/readiness tests remain part of the repository gate.
-- Full live `npm run test:e2e` must be run after a reviewed preview deployment because the branch is not promoted to shared preview automatically.
+- `npm run check` passed on exact head `3902f3f`.
+- `npm run test:mobile` passed at 390px with no overflow; `npm run test:trip:e2e` passed with 6 trip items, shared read-only access, 4 connection cards, and no overflow.
+- Bounded `REGREADY_URL=http://127.0.0.1:8787 npm run test:e2e` passed against a remote-D1 Wrangler preview: local `blob:` preview, `screenshot-reviewed-local` provenance, account/license/plan flows, duplicate signup 409, unknown route 404, unauthenticated plan 401, logout/login, no browser errors, and no mobile overflow.
+- GitHub Actions `RegReady verification` run `32454969254` passed for exact head `3902f3f`.
+- No shared-preview or production deployment was performed; the bounded browser run created test records only in the preview database.
 
 ## Follow-up
 
