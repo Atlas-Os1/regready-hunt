@@ -3,37 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10271f">
-<meta name="description" content="A source-linked hunt readiness checklist for mobile hunters.">
+<meta name="theme-color" content="#12251f">
+<meta name="description" content="A source-linked hunt readiness checklist for Oklahoma hunters.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="styles.css">
-<title>RegReady Hunt</title>
+<title>RegReady Hunt | Oklahoma</title>
 </head>
 <body>
-<main class="shell">
-  <header class="topbar">
-    <div><span class="eyebrow">HUNT PREP</span><h1>Know what to check before you head out.</h1></div>
-    <span class="status" aria-label="Prototype status">Prototype</span>
+<main class="app-shell">
+  <header class="app-nav">
+    <a class="brand" href="./" aria-label="RegReady Hunt home"><span class="brand-mark">R</span><span>RegReady <em>Hunt</em></span></a>
+    <div class="nav-status"><span class="pulse" aria-hidden="true"></span><span id="source-status">Source pack loading</span></div>
   </header>
 
-  <section class="intro">
-    <p>Build a personal readiness card from your hunt details. Every answer should point back to an official source.</p>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker">OKLAHOMA FIELD DESK</p>
+      <h1>Make the next hunt easier to verify.</h1>
+      <p class="hero-lede">Choose your hunt details and get a source-linked field card built around the species and season you selected.</p>
+    </div>
+    <div class="hero-panel" aria-label="Source pack summary">
+      <div class="hero-panel-top"><span class="panel-label">Current source pack</span><span class="review-badge">Review required</span></div>
+      <strong>Oklahoma large game</strong>
+      <p>Captured from ODWC pages. Human interpretation review is still pending.</p>
+      <div class="source-metrics"><div><b id="source-count">-</b><span>sources</span></div><div><b id="rule-count">-</b><span>records</span></div><div><b>5</b><span>species</span></div></div>
+    </div>
   </section>
 
-  <form id="hunt-form" class="panel">
-    <div class="field"><label for="state">State</label><select id="state" required><option value="">Choose a state</option><option>Oklahoma</option><option>Texas</option><option>Wisconsin</option></select></div>
-    <div class="field"><label for="species">Species</label><select id="species" required><option value="">Choose species</option><option>White-tailed deer</option><option>Elk</option><option>Antelope</option><option>Black bear</option><option>Mountain lion</option><option>Turkey</option></select></div>
-    <div class="field"><label for="hunt-date">Hunt date</label><input id="hunt-date" type="date" required></div>
-    <div class="field"><label for="weapon">Weapon</label><select id="weapon" required><option value="">Choose weapon</option><option>Rifle</option><option>Shotgun</option><option>Archery</option><option>Muzzleloader</option></select></div>
-    <button class="primary" type="submit">Build readiness card</button>
-  </form>
+  <section class="workspace">
+    <div class="planner-column">
+      <div class="section-heading"><div><p class="kicker">BUILD A CARD</p><h2>Plan your hunt</h2></div><span class="step-count">01 / 04</span></div>
+      <form id="hunt-form" class="planner-form">
+        <div class="field wide"><label for="state">State</label><select id="state" required><option value="">Choose a state</option><option>Oklahoma</option><option>Texas</option><option>Wisconsin</option></select></div>
+        <div class="field"><label for="species">Species</label><select id="species" required><option value="">Choose species</option><option>White-tailed deer</option><option>Elk</option><option>Antelope</option><option>Black bear</option><option>Mountain lion</option><option>Turkey</option></select></div>
+        <div class="field"><label for="weapon">Weapon</label><select id="weapon" required><option value="">Choose weapon</option><option>Rifle</option><option>Shotgun</option><option>Archery</option><option>Muzzleloader</option></select></div>
+        <div class="field wide"><label for="hunt-date">Hunt date</label><input id="hunt-date" type="date" required></div>
+        <button class="primary" type="submit"><span>Build readiness card</span><span aria-hidden="true">↗</span></button>
+      </form>
+      <div class="field-note"><span class="note-mark">i</span><p>RegReady organizes the source. ODWC remains the authority. Always open the official page before you leave.</p></div>
+    </div>
+    <aside class="context-column">
+      <div class="context-block"><p class="kicker">WHAT YOU GET</p><h3>A field card that answers the next question.</h3><ul class="benefit-list"><li><span>01</span><div><strong>Season evidence</strong><p>Dates and captured source text for your selected species.</p></div></li><li><span>02</span><div><strong>Legal checkpoints</strong><p>License, weapon, reporting, and transport reminders.</p></div></li><li><span>03</span><div><strong>Offline-friendly save</strong><p>Keep the card on this device for the drive in.</p></div></li></ul></div>
+      <div class="context-block source-note"><p class="kicker">SOURCE NOTE</p><p id="source-note">The current pack is captured and normalized. It is not yet approved as legal guidance.</p><a href="https://www.wildlifedepartment.com/hunting/regs/big-game-regulations" target="_blank" rel="noreferrer">Open ODWC big-game regulations <span aria-hidden="true">↗</span></a></div>
+    </aside>
+  </section>
 
   <section id="result" class="result" hidden aria-live="polite"></section>
 
-  <section class="trust-note">
-    <strong>Prototype safety rule</strong>
-    <p>This v1 uses captured and normalized source evidence that still requires human review. It is not legal advice. Before hunting, verify the current official rules, emergency notices, license, tag, and reporting requirements for your exact location.</p>
-  </section>
+  <footer class="safety-footer"><span class="footer-mark">!</span><p><strong>Prototype safety rule.</strong> Captured source evidence still requires human review. This is not legal advice. Verify current rules, emergency notices, licenses, tags, and reporting requirements for your exact location.</p></footer>
 </main>
 <script src="app.js"></script>
 </body>

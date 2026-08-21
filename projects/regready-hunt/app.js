@@ -34,6 +34,12 @@ async function loadSourcePack(){
         if(raw.pack&&raw.sources&&raw.rules){
           sourcePack={retrievedAt:raw.pack.retrieved_at,sources:raw.sources.map(source=>({...source,source_id:source.source_id,finalUrl:source.final_url,seasons:raw.rules.filter(rule=>rule.source_id===source.source_id).map(rule=>({title:rule.title,start:rule.start_date,end:rule.end_date,sourceText:rule.source_text}))}))};
         }else{sourcePack=raw;}
+        const sourceCount=document.querySelector('#source-count');
+        const ruleCount=document.querySelector('#rule-count');
+        const status=document.querySelector('#source-status');
+        if(sourceCount)sourceCount.textContent=String(sourcePack.sources?.length||0);
+        if(ruleCount)ruleCount.textContent=String(sourcePack.sources?.reduce((total,source)=>total+(source.seasons?.length||0),0)||0);
+        if(status)status.textContent='Source pack connected';
         break;
       }
     }catch(_){/* static local preview may not expose the API */}

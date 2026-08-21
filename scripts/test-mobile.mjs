@@ -21,7 +21,7 @@ try {
     checklistItems: document.querySelectorAll(".check").length,
     seasonEvidence: document.querySelectorAll(".season").length,
     saved: Boolean(localStorage.getItem("regready:last-card")),
-    disclaimer: document.querySelector(".trust-note")?.textContent?.includes("requires human review")
+    disclaimer: document.querySelector(".safety-footer")?.textContent?.includes("requires human review")
   }));
   if (result.viewport !== 390 || result.overflow || result.checklistItems !== 4 || result.seasonEvidence !== 5 || !result.saved || !result.disclaimer) {
     throw new Error(JSON.stringify(result));
