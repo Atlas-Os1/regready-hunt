@@ -17,7 +17,7 @@
       "name": "regready-hunt-preview",
       "vars": {
         "ENVIRONMENT": "preview",
-        "RULES_STATUS": "demo-data"
+        "RULES_STATUS": "source-captured-normalization-pending-human-review"
       },
       "d1_databases": [
         {
@@ -32,7 +32,7 @@
       "name": "regready-hunt-production",
       "vars": {
         "ENVIRONMENT": "production",
-        "RULES_STATUS": "demo-data"
+        "RULES_STATUS": "source-captured-normalization-pending-human-review"
       },
       "d1_databases": [
         {

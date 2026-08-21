@@ -9,21 +9,30 @@
 ## Preview
 - Worker: `regready-hunt-preview`
 - URL: https://regready-hunt-preview.srvcflo.workers.dev
-- Version ID: `d3817bdd-56fb-41ef-bac3-eedf844232a4`
+- Version ID: `7f889534-ab9c-4c1f-9c5a-c3d02d02f4f9`
+- D1: `regready-hunt-rules-preview` (`298875a7-d758-4e8a-b0d6-96aff6666180`)
 - Environment: `preview`
-- Rules status: `demo-data`
-- Runtime checks: homepage HTTP 200, `/api/health` returned `status: ok`, `/api/rules/status` returned Oklahoma source URLs, manifest HTTP 200, service worker HTTP 200.
+- Rules status: `source-captured-normalization-pending-human-review`
+- Runtime checks: homepage HTTP 200, `/api/health` returned `status: ok`, `/api/rules/status` returned Oklahoma source URLs, `/api/rules/oklahoma` returned 8 source documents and 17 normalized records across deer, elk, antelope, black bear, and mountain lion.
 
 ## Production scaffold
 - Worker: `regready-hunt-production`
 - URL: https://regready-hunt-production.srvcflo.workers.dev
-- Version ID: `6debb77d-bc0e-4abb-ae24-46a1caa2a501`
+- Version ID: `eafb5be7-0844-4834-952b-be1035ddbe5a`
+- D1: `regready-hunt-rules-production` (`a7edad20-4403-40dc-8df0-e5f4fdd03286`)
 - Environment: `production`
-- Rules status: `demo-data`
-- Runtime verification required before calling this a public rules release: homepage, health, rules status, manifest, mobile flow, and source-pack review.
+- Rules status: `source-captured-normalization-pending-human-review`
+- Runtime checks: `/api/health` returned `status: ok`; `/api/rules/oklahoma` returned the same 8 source documents and 17 normalized records.
+
+## Source-pack runtime verification
+- Source snapshot: `2026-08-21T03:32:09.614609+00:00`
+- Source documents captured: 8
+- Normalized records stored in each D1 database: 17
+- Species present: deer, elk, antelope, black bear, mountain lion
+- Mobile live-flow check: production Worker, 390px viewport, Elk selection rendered 5 season evidence records with no horizontal overflow.
 
 ## Release boundary
-Both Workers currently serve the mobile prototype and explicitly report `demo-data`. No Oklahoma hunting rule is represented as production-valid yet. Production rules content remains blocked on source-pack extraction, citation, review, and stale-source checks.
+Both Workers currently serve captured/normalized source evidence and explicitly report that human review is pending. No Oklahoma hunting rule is production-valid yet. Production rules content remains blocked on citation review, interpretation review, and stale-source checks.
 
 ## Commands used
 ```bash
