@@ -30,8 +30,8 @@ RegReady does not request or store DOB, SSN, barcode/QR payloads, full license i
 
 - `npm run check` passed on exact head `3902f3f`.
 - `npm run test:mobile` passed at 390px with no overflow; `npm run test:trip:e2e` passed with 6 trip items, shared read-only access, 4 connection cards, and no overflow.
-- Bounded `REGREADY_URL=http://127.0.0.1:8787 npm run test:e2e` passed against a remote-D1 Wrangler preview: local `blob:` preview, `screenshot-reviewed-local` provenance, account/license/plan flows, duplicate signup 409, unknown route 404, unauthenticated plan 401, logout/login, no browser errors, and no mobile overflow.
-- GitHub Actions `RegReady verification` run `32454969254` passed for exact head `3902f3f`.
+- Bounded `REGREADY_URL=http://127.0.0.1:8787 npm run test:e2e` passed against a remote-D1 Wrangler preview on the preceding functional head `3902f3f`: local `blob:` preview, `screenshot-reviewed-local` provenance, account/license/plan flows, duplicate signup 409, unknown route 404, unauthenticated plan 401, logout/login, no browser errors, and no mobile overflow. The current head changes only this review artifact; no functional files changed after that browser run.
+- GitHub Actions `RegReady verification` run `32505264366` passed for current exact head `fcb0ed8`; local `npm run check`, `npm run test:mobile`, `npm run test:trip:e2e`, and `npm run cf:dry-run` also passed on current head.
 - No shared-preview or production deployment was performed; the bounded browser run created test records only in the preview database.
 
 ## Follow-up
