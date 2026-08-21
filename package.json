@@ -7,6 +7,7 @@
     "check": "node --check projects/regready-hunt/app.js && node --check projects/regready-hunt/sw.js",
     "test:mobile": "node scripts/test-mobile.mjs",
     "test:e2e": "node scripts/test-browser-e2e.mjs",
+    "test:trip:e2e": "node scripts/test-trip-e2e.mjs",
     "cf:dry-run": "wrangler deploy --env preview --dry-run",
     "cf:deploy:preview": "wrangler deploy --env preview",
     "cf:deploy:production": "wrangler deploy --env production"

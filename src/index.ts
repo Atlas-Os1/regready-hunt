@@ -108,6 +108,72 @@ async function userDataRoute(request: Request, env: Env, path: string) {
       .bind(licenseId, userId, agency, licenseName, species, masked, expiresOn, "user-entered", "user-entered", isoNow()).run();
     return json({ licenseId, status: "saved" }, { status: 201 });
   }
+  if (path === "/api/trips" && request.method === "GET") {
+    const rows = await env.RULES_DB.prepare("SELECT trip_id, title, state, region, species, start_date, end_date, created_at FROM trips WHERE user_id = ? ORDER BY start_date DESC").bind(userId).all();
+    return json({ trips: rows.results });
+  }
+  if (path === "/api/trips" && request.method === "POST") {
+    const input = await body(request);
+    const title = typeof input?.title === "string" ? input.title.trim().slice(0, 120) : "";
+    const state = typeof input?.state === "string" ? input.state.trim() : "";
+    const region = typeof input?.region === "string" ? input.region.trim().slice(0, 120) : null;
+    const species = typeof input?.species === "string" ? input.species.trim() : "";
+    const startDate = typeof input?.startDate === "string" ? input.startDate : "";
+    const endDate = typeof input?.endDate === "string" ? input.endDate : "";
+    if (!title || !state || !species || !startDate || !endDate || endDate < startDate) return error("Trip title, state, species, and a valid date range are required.");
+    const tripId = crypto.randomUUID();
+    const shareToken = randomToken();
+    await env.RULES_DB.prepare("INSERT INTO trips (trip_id, user_id, title, state, region, species, start_date, end_date, share_token, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+      .bind(tripId, userId, title, state, region, species, startDate, endDate, shareToken, isoNow()).run();
+    const defaults = [
+      ["regulations", `${species} regulations and license check`, "Open the official source pack and verify the exact unit/date before travel.", "https://www.wildlifedepartment.com/hunting/regs/big-game-regulations"],
+      ["travel", "Travel and arrival plan", "Route, fuel, arrival window, vehicle recovery plan.", "https://maps.google.com/"],
+      ["camp", "Camp or motel", "Compare public campground availability and nearby lodging.", "https://www.recreation.gov/"],
+      ["public-land", "Public land units to scout", "Confirm access, closures, parking, and current agency map status.", "https://www.wildlifedepartment.com/lands-and-minerals/maps"],
+      ["scouting", "Scout and contingency plan", "Primary area, backup area, wind/weather notes, and buddy assignments.", null],
+      ["safety", "Safety and check-in plan", "Share itinerary, emergency contact, check-in time, and offline map plan.", null]
+    ];
+    for (const [kind, itemTitle, notes, sourceUrl] of defaults) {
+      await env.RULES_DB.prepare("INSERT INTO trip_items (item_id, trip_id, kind, title, notes, source_url, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        .bind(crypto.randomUUID(), tripId, kind, itemTitle, notes, sourceUrl, "open", isoNow()).run();
+    }
+    return json({ tripId, shareToken, shareUrl: `/trip.html?share=${shareToken}`, status: "created" }, { status: 201 });
+  }
+  const tripMatch = path.match(/^\/api\/trips\/([^/]+)$/);
+  if (tripMatch && request.method === "GET") {
+    const trip = await env.RULES_DB.prepare("SELECT trip_id, title, state, region, species, start_date, end_date, share_token, created_at FROM trips WHERE trip_id = ? AND user_id = ?").bind(tripMatch[1], userId).first();
+    if (!trip) return error("Trip not found.", 404);
+    const items = await env.RULES_DB.prepare("SELECT item_id, kind, title, notes, source_url, status, created_at FROM trip_items WHERE trip_id = ? ORDER BY created_at").bind(tripMatch[1]).all();
+    const invites = await env.RULES_DB.prepare("SELECT invite_id, email, display_name, role, created_at FROM trip_invites WHERE trip_id = ? ORDER BY created_at").bind(tripMatch[1]).all();
+    return json({ trip, items: items.results, invites: invites.results });
+  }
+  const itemMatch = path.match(/^\/api\/trips\/([^/]+)\/items$/);
+  if (itemMatch && request.method === "POST") {
+    const owned = await env.RULES_DB.prepare("SELECT trip_id FROM trips WHERE trip_id = ? AND user_id = ?").bind(itemMatch[1], userId).first();
+    if (!owned) return error("Trip not found.", 404);
+    const input = await body(request);
+    const kind = typeof input?.kind === "string" ? input.kind.trim().slice(0, 40) : "custom";
+    const title = typeof input?.title === "string" ? input.title.trim().slice(0, 140) : "";
+    const notes = typeof input?.notes === "string" ? input.notes.trim().slice(0, 1000) : null;
+    const sourceUrl = typeof input?.sourceUrl === "string" ? input.sourceUrl.trim().slice(0, 500) : null;
+    if (!title) return error("Item title is required.");
+    const itemId = crypto.randomUUID();
+    await env.RULES_DB.prepare("INSERT INTO trip_items (item_id, trip_id, kind, title, notes, source_url, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+      .bind(itemId, itemMatch[1], kind, title, notes, sourceUrl, "open", isoNow()).run();
+    return json({ itemId, status: "created" }, { status: 201 });
+  }
+  const inviteMatch = path.match(/^\/api\/trips\/([^/]+)\/invite$/);
+  if (inviteMatch && request.method === "POST") {
+    const owned = await env.RULES_DB.prepare("SELECT trip_id, share_token FROM trips WHERE trip_id = ? AND user_id = ?").bind(inviteMatch[1], userId).first<{ trip_id: string; share_token: string }>();
+    if (!owned) return error("Trip not found.", 404);
+    const input = await body(request);
+    const email = typeof input?.email === "string" ? input.email.trim().toLowerCase().slice(0, 200) : null;
+    const displayName = typeof input?.displayName === "string" ? input.displayName.trim().slice(0, 80) : null;
+    const inviteToken = randomToken();
+    await env.RULES_DB.prepare("INSERT INTO trip_invites (invite_id, trip_id, email, display_name, invite_token, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+      .bind(crypto.randomUUID(), inviteMatch[1], email, displayName, inviteToken, "viewer", isoNow()).run();
+    return json({ inviteToken, shareUrl: `/trip.html?share=${inviteToken}`, status: "created" }, { status: 201 });
+  }
   if (path === "/api/plans" && request.method === "GET") {
     const rows = await env.RULES_DB.prepare("SELECT plan_id, state, species, hunt_date, weapon, notes, created_at FROM hunt_plans WHERE user_id = ? ORDER BY hunt_date DESC").bind(userId).all();
     return json({ plans: rows.results });
@@ -136,6 +202,13 @@ export default {
     if (account) return account;
     if (path === "/api/agency/odwc" && request.method === "GET") {
       return json({ agency: "ODWC", name: "Oklahoma Department of Wildlife Conservation", mode: "official-handoff", directApi: false, officialUrl: "https://license.gooutdoorsoklahoma.com/Licensing/CustomerLookup.aspx", note: "ODWC credentials are never collected by RegReady. Use the official account and return to add a license snapshot." });
+    }
+    if (path.startsWith("/api/trips/share/") && request.method === "GET") {
+      const token = path.split("/").pop() || "";
+      const trip = await env.RULES_DB.prepare("SELECT trip_id, title, state, region, species, start_date, end_date, created_at FROM trips WHERE share_token = ?").bind(token).first();
+      if (!trip) return error("Shared trip not found.", 404);
+      const items = await env.RULES_DB.prepare("SELECT item_id, kind, title, notes, source_url, status, created_at FROM trip_items WHERE trip_id = ? ORDER BY created_at").bind((trip as { trip_id: string }).trip_id).all();
+      return json({ trip, items: items.results, access: "shared-readonly" });
     }
     if (path === "/api/rules/oklahoma" && request.method === "GET") {
       const [pack, sources, rules] = await Promise.all([
