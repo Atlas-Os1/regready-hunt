@@ -205,7 +205,7 @@ export default {
     }
     if (path.startsWith("/api/trips/share/") && request.method === "GET") {
       const token = path.split("/").pop() || "";
-      const trip = await env.RULES_DB.prepare("SELECT trip_id, title, state, region, species, start_date, end_date, created_at FROM trips WHERE share_token = ?").bind(token).first();
+      const trip = await env.RULES_DB.prepare("SELECT trip_id, title, state, region, species, start_date, end_date, created_at FROM trips WHERE share_token = ? OR trip_id IN (SELECT trip_id FROM trip_invites WHERE invite_token = ?)").bind(token, token).first();
       if (!trip) return error("Shared trip not found.", 404);
       const items = await env.RULES_DB.prepare("SELECT item_id, kind, title, notes, source_url, status, created_at FROM trip_items WHERE trip_id = ? ORDER BY created_at").bind((trip as { trip_id: string }).trip_id).all();
       return json({ trip, items: items.results, access: "shared-readonly" });

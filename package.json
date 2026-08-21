@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "check": "node --check projects/regready-hunt/app.js && node --check projects/regready-hunt/sw.js",
+    "check": "node --check projects/regready-hunt/app.js && node --check projects/regready-hunt/sw.js && node --check projects/regready-hunt/trips.js && node --check projects/regready-hunt/trip.js",
     "test:mobile": "node scripts/test-mobile.mjs",
     "test:e2e": "node scripts/test-browser-e2e.mjs",
     "test:trip:e2e": "node scripts/test-trip-e2e.mjs",

@@ -12,7 +12,7 @@ await page.waitForFunction(() => document.querySelector("#account-state")?.textC
 await page.goto(`${base}/trips.html`, { waitUntil: "networkidle2" });
 await page.type("#trip-title", "Northwest Oklahoma October opener"); await page.select("#trip-state", "Oklahoma"); await page.type("#trip-region", "Northwest Oklahoma"); await page.select("#trip-species", "White-tailed deer"); await page.type("#trip-start", "2026-10-03"); await page.type("#trip-end", "2026-10-05");
 await Promise.all([page.waitForNavigation({ waitUntil: "networkidle2" }), page.click("#trip-form button[type=submit]")]);
-if (!page.url().includes("/trip.html?id=")) throw new Error(`trip navigation failed: ${page.url()}`);
+if (!page.url().match(/\/trip(?:\.html)?\?id=/)) throw new Error(`trip navigation failed: ${page.url()}`);
 await page.waitForSelector(".record-card");
 const itemCount = await page.$$eval("#trip-items .record-card", (nodes) => nodes.length);
 if (itemCount !== 6) throw new Error(`expected 6 plan lanes, got ${itemCount}`);

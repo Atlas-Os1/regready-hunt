@@ -3,14 +3,14 @@
 ## Source
 - Repository: https://github.com/Atlas-Os1/regready-hunt
 - Main baseline commit: `611d304ff62bb0428dc215798dd4b0cc8c674cb8`
-- Current development/source-pack head: `f6040e1`
+- Current development/source-pack head: `47a8c4a`
 - Preview branch: `development`
 - Deployment timestamp: 2026-08-20/21 UTC session
 
 ## Preview
 - Worker: `regready-hunt-preview`
 - URL: https://regready-hunt-preview.srvcflo.workers.dev
-- Version ID: `1bba37a7-a350-4fe4-b4f6-2c0830d1fa2c`
+- Version ID: `6be5a5b6-8c29-4597-bfc7-95f742af8dd8`
 - D1: `regready-hunt-rules-preview` (`298875a7-d758-4e8a-b0d6-96aff6666180`)
 - Environment: `preview`
 - Rules status: `source-captured-normalization-pending-human-review`
@@ -19,7 +19,7 @@
 ## Production scaffold
 - Worker: `regready-hunt-production`
 - URL: https://regready-hunt-production.srvcflo.workers.dev
-- Version ID: `c18c7cbd-c1ff-4a53-89a1-82d423119d7d`
+- Version ID: `86db67c7-25a1-4080-834b-0500dee219e6`
 - D1: `regready-hunt-rules-production` (`a7edad20-4403-40dc-8df0-e5f4fdd03286`)
 - Environment: `production`
 - Rules status: `source-captured-normalization-pending-human-review`
@@ -34,7 +34,9 @@
 - Visual QA: live production mobile screenshot reviewed after the redesign. Source connection, 8 sources, 17 records, planner hierarchy, safety footer, and evidence layout were visible and legible.
 - Browser E2E: live production 390px flow passed account creation, duplicate signup rejection (409), all six species states, local save, ODWC handoff link, license snapshot, hunt-plan save, logout/login recovery, unauthenticated plan rejection (401), unknown API rejection (404), and no browser/page errors after expected statuses.
 - GitHub Actions: preview run `32448723601` passed; verification run `32448723607` passed on head `d15a120`; corrected preview run on head `f6040e1` passed; corrected verification run on head `f6040e1` passed.
-## Release boundary
+- Trip workspace live E2E: account-created trip, six seeded planning lanes, owner detail route, buddy invite, read-only shared route, four connection cards, and 390px no-overflow check passed on production version `86db67c7-25a1-4080-834b-0500dee219e6`.
+
+## Product integration boundary
 Both Workers currently serve captured/normalized source evidence and explicitly report that human review is pending. No Oklahoma hunting rule is production-valid yet. Production rules content remains blocked on citation review, interpretation review, and stale-source checks.
 
 ## Commands used
