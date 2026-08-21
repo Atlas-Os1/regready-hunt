@@ -3,13 +3,14 @@
 ## Source
 - Repository: https://github.com/Atlas-Os1/regready-hunt
 - Main baseline commit: `611d304ff62bb0428dc215798dd4b0cc8c674cb8`
+- Current development/source-pack head: `59fdfc1`
 - Preview branch: `development`
 - Deployment timestamp: 2026-08-20/21 UTC session
 
 ## Preview
 - Worker: `regready-hunt-preview`
 - URL: https://regready-hunt-preview.srvcflo.workers.dev
-- Version ID: `7f889534-ab9c-4c1f-9c5a-c3d02d02f4f9`
+- Version ID: `236d8f89-414c-4d07-a2fd-8d175aae044f`
 - D1: `regready-hunt-rules-preview` (`298875a7-d758-4e8a-b0d6-96aff6666180`)
 - Environment: `preview`
 - Rules status: `source-captured-normalization-pending-human-review`
@@ -18,7 +19,7 @@
 ## Production scaffold
 - Worker: `regready-hunt-production`
 - URL: https://regready-hunt-production.srvcflo.workers.dev
-- Version ID: `eafb5be7-0844-4834-952b-be1035ddbe5a`
+- Version ID: `98b61fb2-4ea2-400d-812e-a538afff2e46`
 - D1: `regready-hunt-rules-production` (`a7edad20-4403-40dc-8df0-e5f4fdd03286`)
 - Environment: `production`
 - Rules status: `source-captured-normalization-pending-human-review`
