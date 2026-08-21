@@ -24,6 +24,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Start static preview
+        run: python3 -m http.server 4173 > /tmp/regready-http.log 2>&1 &
       - run: npm run test:mobile
       - run: npx wrangler deploy --env preview --dry-run
         env:
