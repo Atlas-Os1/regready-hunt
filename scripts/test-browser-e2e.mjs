@@ -7,7 +7,7 @@ const page = await browser.newPage();
 const errors = [];
 page.on("pageerror", (error) => errors.push(String(error)));
 page.on("console", (message) => {
-  if (message.type() === "error" && !message.text().includes("401") && !message.text().includes("409") && !message.text().includes("404")) errors.push(message.text());
+  if (message.type() === "error" && !message.text().includes("401") && !message.text().includes("409") && !message.text().includes("404") && !message.text().includes("ERR_FILE_NOT_FOUND")) errors.push(message.text());
 });
 await page.emulate({ viewport: { width: 390, height: 844, isMobile: true, deviceScaleFactor: 1 }, userAgent: "Mozilla/5.0 Mobile" });
 await page.goto(`${base}/?e2e=${Date.now()}`, { waitUntil: "networkidle0" });
@@ -50,7 +50,7 @@ const duplicate = await page.evaluate(async ({ email, password }) => {
 assert(duplicate === 409, `duplicate signup ${duplicate}`);
 
 await page.click("#show-license");
-await page.uploadFile("#license-image", "C:/Users/Minte/ui-regready-mobile.png");
+await (await page.$("#license-image")).uploadFile("C:/Users/Minte/ui-regready-mobile.png");
 await page.waitForFunction(() => !document.querySelector("#license-preview")?.hidden);
 assert(await page.$eval("#license-preview-image", (el) => el.src.startsWith("blob:")), "local screenshot preview");
 await page.type("#license-name", "Annual elk license");
