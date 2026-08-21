@@ -1,0 +1,33 @@
+name: RegReady verification
+
+on:
+  pull_request:
+  push:
+    branches: [development, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regready-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Start static preview
+        run: python3 -m http.server 4173 > /tmp/regready-http.log 2>&1 &
+      - name: Run mobile interaction test
+        run: npm run test:mobile
+      - name: Validate Wrangler preview config
+        run: npx wrangler deploy --env preview --dry-run
