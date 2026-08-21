@@ -50,12 +50,17 @@ const duplicate = await page.evaluate(async ({ email, password }) => {
 assert(duplicate === 409, `duplicate signup ${duplicate}`);
 
 await page.click("#show-license");
+await page.uploadFile("#license-image", "C:/Users/Minte/ui-regready-mobile.png");
+await page.waitForFunction(() => !document.querySelector("#license-preview")?.hidden);
+assert(await page.$eval("#license-preview-image", (el) => el.src.startsWith("blob:")), "local screenshot preview");
 await page.type("#license-name", "Annual elk license");
 await page.type("#license-species", "Elk");
 await page.type("#license-number", "...1234");
 await page.$eval("#license-expiry", (el) => { el.value = "2026-12-31"; });
 await page.click("#license-form button[type=submit]");
 await page.waitForFunction(() => document.querySelector("#license-list")?.innerText.includes("Annual elk license"));
+const licenseSource = await page.evaluate(async () => (await (await fetch("/api/licenses")).json()).licenses.at(-1)?.source);
+assert(licenseSource === "screenshot-reviewed-local", `license source ${licenseSource}`);
 
 await page.click("#save-plan");
 await page.waitForFunction(() => document.querySelector("#plan-list")?.innerText.includes("Turkey in Oklahoma"));
