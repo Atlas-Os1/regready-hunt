@@ -19,10 +19,11 @@ try {
     viewport: innerWidth,
     overflow: document.documentElement.scrollWidth > innerWidth,
     checklistItems: document.querySelectorAll(".check").length,
+    seasonEvidence: document.querySelectorAll(".season").length,
     saved: Boolean(localStorage.getItem("regready:last-card")),
     disclaimer: document.querySelector(".trust-note")?.textContent?.includes("demonstration data")
   }));
-  if (result.viewport !== 390 || result.overflow || result.checklistItems !== 4 || !result.saved || !result.disclaimer) {
+  if (result.viewport !== 390 || result.overflow || result.checklistItems !== 4 || result.seasonEvidence !== 5 || !result.saved || !result.disclaimer) {
     throw new Error(JSON.stringify(result));
   }
   console.log(JSON.stringify(result));
