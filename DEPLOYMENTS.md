@@ -3,7 +3,7 @@
 ## Source
 - Repository: https://github.com/Atlas-Os1/regready-hunt
 - Main baseline commit: `611d304ff62bb0428dc215798dd4b0cc8c674cb8`
-- Current development/source-pack head: `1024ef5`
+- Current development/source-pack head: `f6040e1`
 - Preview branch: `development`
 - Deployment timestamp: 2026-08-20/21 UTC session
 
@@ -33,7 +33,7 @@
 - Mobile live-flow check: production Worker, 390px viewport, Elk selection rendered 5 season evidence records with no horizontal overflow.
 - Visual QA: live production mobile screenshot reviewed after the redesign. Source connection, 8 sources, 17 records, planner hierarchy, safety footer, and evidence layout were visible and legible.
 - Browser E2E: live production 390px flow passed account creation, duplicate signup rejection (409), all six species states, local save, ODWC handoff link, license snapshot, hunt-plan save, logout/login recovery, unauthenticated plan rejection (401), unknown API rejection (404), and no browser/page errors after expected statuses.
-
+- GitHub Actions: preview run `32448723601` passed; verification run `32448723607` passed on head `d15a120`; corrected preview run on head `f6040e1` passed; corrected verification run on head `f6040e1` passed.
 ## Release boundary
 Both Workers currently serve captured/normalized source evidence and explicitly report that human review is pending. No Oklahoma hunting rule is production-valid yet. Production rules content remains blocked on citation review, interpretation review, and stale-source checks.
 
